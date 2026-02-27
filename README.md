@@ -17,6 +17,14 @@ Features:
 
 Demo :
 
+![alt text](https://github.com/jenizar/sap-rap-print-barcode-label-in-sap-btp/blob/main/screenshots/pic1.png)
+
+![alt text](https://github.com/jenizar/sap-rap-print-barcode-label-in-sap-btp/blob/main/screenshots/pic2.png)
+
+![alt text](https://github.com/jenizar/sap-rap-print-barcode-label-in-sap-btp/blob/main/screenshots/pic3.png)
+
+![alt text](https://github.com/jenizar/sap-rap-print-barcode-label-in-sap-btp/blob/main/screenshots/pic4.png)
+
 Output data:
 
 [{'ebeln': '3000000005', 'matnr': '569-6798', 'maktx': 'SSF7509 80V', 'produ': 'FGMOS', 'deliv': 'VHW53645', 'quant': '650', 'ldate': '23/02/2026', 'rfrom': 'ZONE I', 'rdest': 'ZONE J'}]
