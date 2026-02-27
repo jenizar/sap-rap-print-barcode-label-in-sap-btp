@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcode</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"
+      integrity="sha512-k2wo/BkbloaRU7gc/RkCekHr4IOVe10kYxJ/Q8dRPl7u3YshAQmg3WfZtIcseEk+nGBdK03fHBeLgXTxRmWCLQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    >
+      </script>    
+    <!-- <link rel="stylesheet" href="style.css" />    -->
+  <style>
+        /* RESET & BASIC SETUP */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 10pt;
+            background-color: #f0f0f0; /* Grey background for screen preview */
+            display: flex;
+            padding: 10px;
+        }
+
+                /* LABEL CONTAINER (The physical label) */
+        .label {
+            /* EXACT DIMENSIONS REQUESTED */
+            width: 10cm;
+            height: 6cm;
+            
+            padding: 2mm; /* Internal padding */
+            background: white;
+            
+            /* Layout */
+            flex-direction: column;
+            
+            /* Visual border for screen preview only */
+            border: 1px dashed #999; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .barcode-container {
+            flex-grow: 1; /* Pushes content to fill space */
+            display: flex;
+            flex-direction: column;
+            line-height: 0.7;
+        }
+
+.shipto-container {
+    display: flex;
+    justify-content: space-between; /* Pushes items to the left and right edges */
+    width: 100%; /* Ensure the container spans the full width */
+    line-height: 0.7;
+}
+
+.left-item {
+  font-size: 10pt;
+}
+
+.right-item {
+  font-size: 10pt;
+}
+
+.t-barcode-prd {
+  padding: 2px 5px;
+  width: 50%;
+  font-size: 10pt;
+}
+
+.t-barcode-po {
+  padding: 8px 20px;
+  width: 50%;
+  font-size: 10pt;
+}
+
+.t-barcode-part {
+  padding: 12px 24px;
+  width: 50%;
+  font-size: 10pt;
+}
+
+.t-barcode-deliv {
+  padding: 12px 24px;
+  width: 50%;
+  font-size: 10pt;
+}
+ 
+  </style>      
+  </head>
+
+  <body>
+    <!-- The Label Template -->
+    <div class="label">    
+      <div class="shipto-container">
+        <div class="left-item">Product : NMOS</div>
+        <div class="right-item">Route : ZONE E To ZONE F</div>
+      </div>
+        <input type="hidden" id="prd_input" value="NMOS"
+           class="t-barcode-prd"/>
+          <div class="barcode-container">
+            <svg class="barcode" id="prod"></svg> 
+          </div>
+
+      <div class="barcode-container">PO No : 3000000003</div>
+        <input type="hidden" id="po_input" value="3000000003"
+           class="t-barcode-po"/>
+           <div class="barcode-container">
+            <svg class="barcode" id="po_no"></svg> 
+           </div>
+        <div class="shipto-container"> 
+         <div class="left-item">Part No : 473-3124</div>
+         <div style="margin: 0 auto; width: 90px;">AON7408 30V</div>
+        </div> 
+        <input type="hidden" id="part_input" value="473-3124"
+           class="t-barcode-part"/>
+           <div class="barcode-container">
+             <svg class="barcode" id="part_no"></svg> 
+           </div>    
+        <div class="shipto-container"> 
+         <div class="left-item">Delivery No : PSC59873</div>
+         <div class="left-item">Qty : 450 - 11/02/2026</div>
+        </div> 
+        <input type="hidden" id="part_input" value="PSC59873"
+           class="t-barcode-deliv"/>
+           <div class="barcode-container">
+             <svg class="barcode" id="deliv_no"></svg> 
+           </div>               
+      </div>     
+  <script>
+
+  const product = document.querySelector(".t-barcode-prd").value
+  if (product.trim() !== "") {
+    JsBarcode("#prod", product, {
+      format: "CODE128",
+      height: 25,
+      displayValue: false,
+    });
+
+  } else {
+    alert("Please enter a valid text or number to generate a barcode.");
+  }
+
+  const po_no = document.querySelector(".t-barcode-po").value
+  if (po_no.trim() !== "") {
+    JsBarcode("#po_no", po_no, {
+      format: "CODE128",
+      height: 25,
+      displayValue: false,
+    });
+
+  } else {
+    alert("Please enter a valid text or number to generate a barcode.");
+  }
+ 
+  const part_no = document.querySelector(".t-barcode-part").value
+  if (part_no.trim() !== "") {
+    JsBarcode("#part_no", part_no, {
+      format: "CODE128",
+      height: 25,
+      displayValue: false,
+    });
+  } else {
+    alert("Please enter a valid text or number to generate a barcode.");
+  }  
+
+  const deliv_no = document.querySelector(".t-barcode-deliv").value
+  if (deliv_no.trim() !== "") {
+    JsBarcode("#deliv_no", deliv_no, {
+      format: "CODE128",
+      height: 25,
+      displayValue: false,
+    });
+  } else {
+    alert("Please enter a valid text or number to generate a barcode.");
+  }  
+
+  </script>
+
+  </body>
+</html>
