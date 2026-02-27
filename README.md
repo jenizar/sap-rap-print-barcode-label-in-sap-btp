@@ -2,11 +2,17 @@
 SAP RAP : Print Barcode Label in SAP BTP Trial
 
 Features:
+
 ~ SVG Format
+
 ~ Code 128
+
 ~ Javascript JSBarcode
+
 ~ Label size 10 x 6 cm
+
 ~ Easy scan by smartphone camera 
+
 ~ Easy scan by Google Lens (desktop/mobile)
 
 Demo :
