@@ -1,0 +1,47 @@
+@Metadata.allowExtensions: true
+@Metadata.ignorePropagatedAnnotations: true
+@EndUserText: {
+  label: '###GENERATED Core Data Service Entity'
+}
+@ObjectModel: {
+  sapObjectNodeType.name: 'ZYTBLABEL'
+}
+@AccessControl.authorizationCheck: #MANDATORY
+define root view entity ZC_YTBLABEL
+  provider contract transactional_query
+  as projection on ZR_YTBLABEL
+  association [1..1] to ZR_YTBLABEL as _BaseEntity on $projection.Ebeln = _BaseEntity.Ebeln
+{
+  key Ebeln,
+  Matnr,
+  Maktx,
+  Produ,
+  Deliv,
+  Quant,
+  Ldate,
+  Rfrom,
+  Rdest,
+  @Semantics: {
+    user.createdBy: true
+  }
+  LocalCreatedBy,
+  @Semantics: {
+    systemDateTime.createdAt: true
+  }
+  LocalCreatedAt,
+  @Semantics: {
+    user.localInstanceLastChangedBy: true
+  }
+  LocalLastChangedBy,
+  @Semantics: {
+    systemDateTime.localInstanceLastChangedAt: true
+  }
+  LocalLastChangedAt,
+  @Semantics: {
+    systemDateTime.lastChangedAt: true
+  }
+  LastChangedAt,
+  
+  _BaseEntity
+}
+
