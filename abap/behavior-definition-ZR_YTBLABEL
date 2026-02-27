@@ -1,0 +1,57 @@
+managed implementation in class ZBP_R_YTBLABEL unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZR_YTBLABEL alias ZrYtblabel
+persistent table YTBLABEL
+extensible
+draft table ZYTBLABEL_D
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master( global )
+{
+  field ( mandatory : create )
+   Ebeln;
+
+  field ( readonly )
+   LocalCreatedBy,
+   LocalCreatedAt,
+   LocalLastChangedBy,
+   LocalLastChangedAt,
+   LastChangedAt;
+
+  field ( readonly : update )
+   Ebeln;
+
+
+  create;
+  update;
+  delete;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  action print_barcode;
+
+  mapping for YTBLABEL corresponding extensible
+  {
+    Ebeln = EBELN;
+    Matnr = MATNR;
+    Maktx = MAKTX;
+    Produ = PRODU;
+    Deliv = DELIV;
+    Quant = QUANT;
+    Ldate = LDATE;
+    Rfrom = RFROM;
+    Rdest = RDEST;
+    LocalCreatedBy = LOCAL_CREATED_BY;
+    LocalCreatedAt = LOCAL_CREATED_AT;
+    LocalLastChangedBy = LOCAL_LAST_CHANGED_BY;
+    LocalLastChangedAt = LOCAL_LAST_CHANGED_AT;
+    LastChangedAt = LAST_CHANGED_AT;
+  }
+
+}
