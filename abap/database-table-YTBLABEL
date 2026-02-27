@@ -1,0 +1,24 @@
+@EndUserText.label : 'Barcode Label data'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ytblabel {
+
+  key client            : abap.clnt not null;
+  key ebeln             : abap.char(10) not null;
+  matnr                 : abap.char(20);
+  maktx                 : abap.char(30);
+  produ                 : abap.char(20);
+  deliv                 : abap.char(15);
+  quant                 : abap.char(5);
+  ldate                 : abap.char(10);
+  rfrom                 : abap.char(10);
+  rdest                 : abap.char(10);
+  local_created_by      : abp_creation_user;
+  local_created_at      : abp_creation_tstmpl;
+  local_last_changed_by : abp_locinst_lastchange_user;
+  local_last_changed_at : abp_locinst_lastchange_tstmpl;
+  last_changed_at       : abp_lastchange_tstmpl;
+
+}
