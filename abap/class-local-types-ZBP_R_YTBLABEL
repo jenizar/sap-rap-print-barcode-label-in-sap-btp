@@ -1,0 +1,111 @@
+CLASS LHC_ZR_YTBLABEL DEFINITION INHERITING FROM CL_ABAP_BEHAVIOR_HANDLER.
+  PRIVATE SECTION.
+
+    CONSTANTS:
+      base_url     TYPE string VALUE 'https://4f9b-111-94-3-219.ngrok-free.app/barcode',
+      content_type TYPE string VALUE 'Content-type',
+      json_content TYPE string VALUE 'application/json; charset=UTF-8'.
+
+        DATA lv_json_payload TYPE string.
+
+    METHODS:
+      GET_GLOBAL_AUTHORIZATIONS FOR GLOBAL AUTHORIZATION
+        IMPORTING
+           REQUEST requested_authorizations FOR ZrYtblabel
+        RESULT result.
+
+      METHODS print_barcode FOR MODIFY
+        IMPORTING keys FOR ACTION ZrYtblabel~print_barcode.
+
+    METHODS create_client
+        IMPORTING url           TYPE string
+        RETURNING VALUE(result) TYPE REF TO if_web_http_client
+        RAISING   cx_static_check.
+
+    METHODS create_post
+        IMPORTING post_without_id TYPE string
+        RETURNING VALUE(result)   TYPE string
+        RAISING   cx_static_check.
+ENDCLASS.
+
+CLASS LHC_ZR_YTBLABEL IMPLEMENTATION.
+  METHOD GET_GLOBAL_AUTHORIZATIONS.
+  ENDMETHOD.
+
+  METHOD print_barcode.
+
+    DATA: lv_service TYPE string,
+          lv_result TYPE string.
+
+    TYPES : BEGIN OF ty_data,
+             ebeln TYPE ytblabel-ebeln,
+             matnr TYPE ytblabel-matnr,
+             maktx TYPE ytblabel-maktx,
+             produ TYPE ytblabel-produ,
+             deliv TYPE ytblabel-deliv,
+             quant TYPE ytblabel-quant,
+             ldate TYPE ytblabel-ldate,
+             rfrom TYPE ytblabel-rfrom,
+             rdest TYPE ytblabel-rdest,
+            END OF ty_data.
+
+    DATA : gt_data TYPE TABLE OF ty_data,
+           gs_data TYPE ty_data.
+
+      READ ENTITY IN LOCAL MODE ZR_YTBLABEL
+       ALL FIELDS WITH CORRESPONDING #( keys )
+         RESULT DATA(it_data).
+
+     LOOP AT it_data INTO DATA(wa_data).
+       gs_data-ebeln = wa_data-ebeln.
+       gs_data-matnr = wa_data-matnr.
+       gs_data-maktx = wa_data-maktx.
+       gs_data-produ = wa_data-produ.
+       gs_data-deliv = wa_data-deliv.
+       gs_data-quant = wa_data-quant.
+       gs_data-ldate = wa_data-ldate.
+       gs_data-rfrom = wa_data-rfrom.
+       gs_data-rdest = wa_data-rdest.
+        APPEND gs_data TO gt_data.
+      ENDLOOP.
+
+     /UI2/CL_JSON=>serialize(
+     EXPORTING
+      data        = gt_data               " Data to serialize (internal table)
+      pretty_name = 'L' "/UI2/CL_JSON=>pretty_mode-low_case " Optional: formats field names as low_case
+     RECEIVING
+      r_json      = lv_json_payload                " The resulting JSON string
+).
+
+    TRY.
+        " Create
+        DATA(create_response) = create_post( lv_json_payload ).
+
+      CATCH cx_root INTO DATA(exc).
+
+    ENDTRY.
+
+  ENDMETHOD.
+
+  METHOD create_client.
+    DATA(dest) = cl_http_destination_provider=>create_by_url( url ).
+    result = cl_web_http_client_manager=>create_by_http_destination( dest ).
+  ENDMETHOD.
+
+  METHOD create_post.
+    " Convert input post to JSON
+    DATA(json_post) = xco_cp_json=>data->from_abap( post_without_id )->apply(
+      VALUE #( ( xco_cp_json=>transformation->underscore_to_camel_case ) ) )->to_string(  ).
+
+    " Send JSON of post to server and return the response
+    DATA(url) = |{ base_url }|.
+    DATA(client) = create_client( url ).
+    DATA(req) = client->get_http_request(  ).
+    req->set_text( json_post ).
+    req->set_header_field( i_name = content_type i_value = json_content ).
+
+    result = client->execute( if_web_http_client=>post )->get_text(  ).
+
+    client->close(  ).
+  ENDMETHOD.
+ENDCLASS.
